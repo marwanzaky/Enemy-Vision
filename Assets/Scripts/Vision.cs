@@ -26,13 +26,13 @@ public class Vision : MonoBehaviour
     {
         for (int i = 0; i < length; i++)
         {
-            (Vector3 startPos, Vector3 endPos) raycastPos1 = Raycast(i);
-            (Vector3 startPos, Vector3 endPos) raycastPos2 = Raycast(i + 1);
-            GenerateTriangle(i, raycastPos1.startPos, raycastPos1.endPos, raycastPos2.endPos);
+            Vector3 endPos = Raycast(i);
+            Vector3 nextEndPos = Raycast(i + 1);
+            GenerateTriangle(i, Vector3.zero, endPos, nextEndPos);
         }
     }
 
-    (Vector3 startPos, Vector3 endPos) Raycast(int i)
+    Vector3 Raycast(int i)
     {
         float unit = range / length;
         float degress = unit * i;
@@ -43,12 +43,11 @@ public class Vision : MonoBehaviour
 
         RaycastHit hit = RaycastHitX.Cast(ori, dir, layerMask, maxDistance, debug);
 
-        return (ori, hit.collider ? hit.point : dir * maxDistance);
+        return (hit.collider ? Vector3X.IgnoreY(hit.point) : dir * maxDistance);
     }
 
-    void GenerateTriangle(int i, Vector3 startPos, Vector3 endPos, Vector3 nextStartPos)
+    void GenerateTriangle(int i, Vector3 startPos, Vector3 endPos, Vector3 nextEndPos)
     {
-        VisionMesh item = meshes[i];
-        item.meshFilter.mesh = MeshGeneration.Triangle(startPos, endPos, nextStartPos);
+        meshes[i].meshFilter.mesh = MeshGeneration.Triangle(startPos, endPos, nextEndPos);
     }
 }
