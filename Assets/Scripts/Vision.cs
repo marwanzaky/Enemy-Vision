@@ -4,31 +4,44 @@ using System.Collections.Generic;
 public class Vision : MonoBehaviour
 {
     List<VisionMesh> meshes = new List<VisionMesh>();
-    float startDegress = 90f;
 
-    [SerializeField] int length = 12;
-    [SerializeField] float range = 90f;
-    [SerializeField] float maxDistance = 10f;
+    float startDegress = 90f;
+    float lastLength = 0;
+
+    [SerializeField, Range(0f, 100f)] int length = 12;
+    [SerializeField, Range(0f, 360f)] float range = 90f;
+    [SerializeField, Range(.01f, 100f)] float maxDistance = 10f;
     [SerializeField] bool debug = false;
+    [SerializeField] bool castShadow = false;
+    [SerializeField] string targetLayer = "New layer";
     [SerializeField] LayerMask layerMask;
     [SerializeField] Material material;
 
     void Start()
     {
-        for (int i = 0; i < length; i++)
-        {
-            VisionMesh item = new VisionMesh(transform, material);
-            meshes.Add(item);
-        }
+        lastLength = length;
+        SpawnVisionMesh();
     }
 
     void Update()
+    {
+        if (lastLength != length)
+        {
+            lastLength = length;
+            SpawnVisionMesh();
+        }
+
+        if (length > 0)
+            Generate();
+    }
+
+    void Generate()
     {
         for (int i = 0; i < length; i++)
         {
             Vector3 endPos = Raycast(i);
             Vector3 nextEndPos = Raycast(i + 1);
-            GenerateTriangle(i, Vector3.zero, endPos, nextEndPos);
+            DrawTriangle(i, Vector3.zero, endPos, nextEndPos);
         }
     }
 
@@ -43,11 +56,35 @@ public class Vision : MonoBehaviour
 
         RaycastHit hit = RaycastHitX.Cast(ori, dir, layerMask, maxDistance, debug);
 
-        return (hit.collider ? Vector3X.IgnoreY(hit.point - transform.position) : dir * maxDistance);
+        if (debug && hit.collider != null && hit.collider.gameObject.layer == LayerMask.NameToLayer(targetLayer))
+            Debug.Log("Can see target");
+
+        return (hit.collider ? Vector3X.IgnoreY(hit.point - ori) : dir * maxDistance);
     }
 
-    void GenerateTriangle(int i, Vector3 startPos, Vector3 endPos, Vector3 nextEndPos)
+    void DrawTriangle(int i, Vector3 startPos, Vector3 endPos, Vector3 nextEndPos)
     {
         meshes[i].meshFilter.mesh = MeshGeneration.Triangle(startPos, endPos, nextEndPos);
+    }
+
+    void SpawnVisionMesh()
+    {
+        foreach (var el in meshes)
+            Destroy(el.gameObject);
+
+        meshes.Clear();
+
+        for (int i = 0; i < length; i++)
+        {
+            VisionMesh item = new VisionMesh(transform, material);
+
+            if (!castShadow)
+                item.meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+
+            meshes.Add(item);
+        }
+
+        if (debug)
+            Debug.Log("Clear and re-spawn the vision mesh");
     }
 }

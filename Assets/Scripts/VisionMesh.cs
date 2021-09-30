@@ -3,18 +3,19 @@ using UnityEngine;
 [System.Serializable]
 public class VisionMesh
 {
+    public GameObject gameObject;
     public MeshFilter meshFilter;
     public MeshRenderer meshRenderer;
 
     public VisionMesh(Transform parent, Material material)
     {
-        GameObject go = new GameObject("Vision Mesh");
-        meshFilter = go.AddComponent<MeshFilter>();
-        meshRenderer = go.AddComponent<MeshRenderer>();
+        gameObject = new GameObject("Vision Mesh");
+        meshFilter = gameObject.AddComponent<MeshFilter>();
+        meshRenderer = gameObject.AddComponent<MeshRenderer>();
 
         meshRenderer.material = material;
 
-        go.transform.parent = parent;
-        go.transform.localPosition = Vector3.zero;
+        gameObject.transform.parent = parent;
+        gameObject.transform.localPosition = Vector3.zero;
     }
 }
