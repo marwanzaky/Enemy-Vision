@@ -43,7 +43,7 @@ public class Vision : MonoBehaviour
 
         RaycastHit hit = RaycastHitX.Cast(ori, dir, layerMask, maxDistance, debug);
 
-        return (hit.collider ? Vector3X.IgnoreY(hit.point) : dir * maxDistance);
+        return (hit.collider ? Vector3X.IgnoreY(hit.point - transform.position) : dir * maxDistance);
     }
 
     void GenerateTriangle(int i, Vector3 startPos, Vector3 endPos, Vector3 nextEndPos)
