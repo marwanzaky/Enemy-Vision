@@ -1,3 +1,0 @@
-<UXML xmlns="UnityEngine.UIElements">
-  <Toggle class="toggle" label="Toggle"/>
-</UXML>
