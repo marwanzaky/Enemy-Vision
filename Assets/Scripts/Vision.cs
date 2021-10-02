@@ -5,7 +5,7 @@ public class Vision : MonoBehaviour
 {
     List<VisionMesh> meshes = new List<VisionMesh>();
 
-    float startDegress = 90f;
+    const float START_DEGRESS = 90f;
     float lastLength = 0;
 
     [SerializeField, Range(0f, 100f)] int length = 12;
@@ -39,27 +39,31 @@ public class Vision : MonoBehaviour
     {
         for (int i = 0; i < length; i++)
         {
-            Vector3 endPos = Raycast(i);
-            Vector3 nextEndPos = Raycast(i + 1);
-            DrawTriangle(i, Vector3.zero, endPos, nextEndPos);
+            Vector3 startPos = Vector3.zero;
+            Vector3 point1 = Raycast(i).point;
+            Vector3 point2 = Raycast(i + 1).point;
+
+            DrawTriangle(i, startPos, point1, point2);
         }
     }
 
-    Vector3 Raycast(int i)
+    (RaycastHit hit, Vector3 point) Raycast(int i)
     {
-        float unit = range / length;
-        float degress = unit * i;
+        float degress = range / length * i;
         float offsetDegress = range / 2f;
 
         Vector3 ori = transform.position;
-        Vector3 dir = MathfX.DegressToVector3D(degress - offsetDegress + startDegress);
+        Vector3 dir = MathfX.DegressToVector3D(degress - offsetDegress + START_DEGRESS);
 
         RaycastHit hit = RaycastHitX.Cast(ori, dir, layerMask, maxDistance, debug);
 
-        if (debug && hit.collider != null && hit.collider.gameObject.layer == LayerMask.NameToLayer(targetLayer))
+        if (debug &&
+            hit.collider != null &&
+            hit.collider.gameObject.layer == LayerMask.NameToLayer(targetLayer))
             Debug.Log("Can see target");
 
-        return (hit.collider ? Vector3X.IgnoreY(hit.point - ori) : dir * maxDistance);
+        return (hit, hit.collider ?
+                    Vector3X.IgnoreY(hit.point) : dir * maxDistance);
     }
 
     void DrawTriangle(int i, Vector3 startPos, Vector3 endPos, Vector3 nextEndPos)

@@ -6,15 +6,12 @@ public static class MeshGeneration
     {
         Mesh mesh = new Mesh();
 
-        // Vertices
         Vector3[] vertices = new Vector3[] { a, b, c };
         mesh.vertices = vertices;
 
-        // Triangles
         int[] tris = new int[] { 0, 2, 1, };
         mesh.triangles = tris;
 
-        // Texture coordinates
         Vector2[] uv = new Vector2[]
         {
             new Vector2(0, 0),
