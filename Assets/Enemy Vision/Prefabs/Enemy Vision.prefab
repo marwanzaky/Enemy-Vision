@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1380359293}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.1, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -44,10 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cf9a6ae22f7d4b238387e3b7b016658, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  length: 32
-  range: 90
-  maxDistance: 20
-  debug: 1
+  length: 48
+  range: 60
+  maxDistance: 25
+  debug: 0
+  castShadow: 0
   targetLayer: Player
   layerMask:
     serializedVersion: 2
@@ -63,7 +64,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2415096352283425714}
   m_Layer: 0
-  m_Name: EnemyVision
+  m_Name: Enemy Vision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -136,7 +137,7 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4288582896609606796}
   m_Enabled: 1
-  m_CastShadows: 0
+  m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
