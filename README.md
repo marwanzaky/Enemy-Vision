@@ -11,9 +11,9 @@
 3. Add custom behaviour by overriding the callback OnSeeingTarget()
 
 ```cs
-    protected override void OnSeeingTarget() {
-        // Add custom behaviour
-    }
+protected override void OnSeeingTarget() {
+     // Add custom behaviour
+}
 ```
 
 4. Play and enjoy!
