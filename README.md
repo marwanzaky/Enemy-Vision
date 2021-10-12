@@ -4,6 +4,7 @@
 ## Features
 1. Simple to use and configure
 2. Good performance and optimization
+3. Easy to customise, and adjust settings
 
 ## Usage
 1. Go to "Enemy Vision/Demo" scene
