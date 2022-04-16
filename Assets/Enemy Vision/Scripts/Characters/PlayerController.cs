@@ -60,9 +60,9 @@ public class PlayerController : Character
 
     private void Movement()
     {
-        var x = transform.right * Speed * Input.GetAxis("Horizontal");
-        var z = transform.forward * Speed * Input.GetAxis("Vertical");
-        var movement = x + z;
+        var moveX = transform.right * Speed * Input.GetAxis("Horizontal");
+        var moveZ = transform.forward * Speed * Input.GetAxis("Vertical");
+        var movement = moveX + moveZ;
 
         Move(movement * Time.deltaTime);
     }

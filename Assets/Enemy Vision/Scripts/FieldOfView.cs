@@ -15,7 +15,10 @@ public class FieldOfView : MonoBehaviour
     [SerializeField] float fieldOfView = 90f;
     [SerializeField] float distance = 50f;
     [SerializeField] Vector3 offset;
+    [SerializeField] LayerMask targetMask;
     [SerializeField] LayerMask layerMask;
+
+    public bool IsTarget { get; private set; }
 
     private void Start()
     {
@@ -25,6 +28,8 @@ public class FieldOfView : MonoBehaviour
 
     private void LateUpdate()
     {
+        IsTarget = false;
+
         transform.position = Vector3.zero;
         transform.rotation = Quaternion.identity;
 
@@ -44,6 +49,9 @@ public class FieldOfView : MonoBehaviour
         {
             var hit = PhysicsX.Raycast(origin, MathfX.AngleToVector3D(angle), layerMask, distance, debug: true);
             var vertex = hit.collider ? hit.point : origin + MathfX.AngleToVector3D(angle + transform.eulerAngles.y) * distance;
+
+            if (hit.collider != null && CompareLayer(hit.collider.gameObject.layer, targetMask))
+                IsTarget = true;
 
             vertices[vertexIndex] = vertex;
 
@@ -74,5 +82,10 @@ public class FieldOfView : MonoBehaviour
     public void SetDirection(Vector3 direction)
     {
         startAngle = MathfX.VectorToAngle3D(direction) + fieldOfView / 2f;
+    }
+
+    bool CompareLayer(LayerMask layer, LayerMask layerMask)
+    {
+        return layerMask == (layerMask | (1 << layer));
     }
 }
